@@ -2,17 +2,22 @@
     flex: 1 1 auto;
 }
 
-mat-toolbar{
-    color:white;
+mat-toolbar {
+    background-color: var(--surface) !important;
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-.smallText{
-    font-size:small;
+.smallText {
+    font-size: small;
+    color: var(--text-secondary);
 }
 
-.titleFlex{
-    display:flex;
-    align-items:center;
-    justify-content:center;
+.titleFlex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    letter-spacing: -0.01em;
 }
-
