@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "buildForPages": "ng build --prod --base-href https://RyanLefebvre.github.io/RP-Hypertrophy-Hub-Visualizer/"
+    "buildForPages": "ng build --prod --base-href https://catchingknives.github.io/RP-Hypertrophy-Hub-Visualizer/"
   },
   "private": true,
   "dependencies": {
