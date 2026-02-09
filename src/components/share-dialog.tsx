@@ -1,13 +1,19 @@
 "use client";
 
-import { forwardRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 
 const ShareDialog = forwardRef<HTMLDialogElement>(function ShareDialog(_, ref) {
   const [copied, setCopied] = useState(false);
+  const [url, setUrl] = useState("");
+
+  useEffect(() => {
+    setUrl(window.location.href);
+  }, []);
 
   function copyToClipboard() {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
+    const currentUrl = window.location.href;
+    setUrl(currentUrl);
+    navigator.clipboard.writeText(currentUrl).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
@@ -23,7 +29,7 @@ const ShareDialog = forwardRef<HTMLDialogElement>(function ShareDialog(_, ref) {
         </div>
         <hr style={styles.divider} />
         <div style={styles.urlHolder}>
-          {typeof window !== "undefined" ? window.location.href : ""}
+          {url}
         </div>
         <div className="button-group" style={{ marginTop: 20 }}>
           <button className="button-green" onClick={copyToClipboard}>
