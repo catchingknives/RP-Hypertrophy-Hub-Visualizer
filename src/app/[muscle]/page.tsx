@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { VOLUME_LANDMARKS } from "@/data/volume-landmarks";
 import MuscleTable from "@/components/muscle-table";
-import VolumeChart from "@/components/volume-chart";
+import VolumeChartWrapper from "@/components/volume-chart-wrapper";
 import ExerciseList from "@/components/exercise-list";
 import Disclaimer from "@/components/disclaimer";
 import MuscleDetailHeader from "./header";
@@ -42,7 +42,7 @@ export default async function MusclePage({ params }: PageProps) {
       </div>
       <MuscleTable data={[muscleGroup]} />
       <div style={styles.flexManager}>
-        <VolumeChart muscleGroup={muscleGroup} />
+        <VolumeChartWrapper muscleGroup={muscleGroup} />
         <ExerciseList exercises={muscleGroup.exercises} />
       </div>
       <Disclaimer />
