@@ -7,7 +7,7 @@ export default function Disclaimer() {
       </a>
       {" (RP) and take no credit for their work. This tool is open source and if you're interested, here is the "}
       <a
-        href="https://github.com/RyanLefebvre/RP-Hypertrophy-Hub-Visualizer"
+        href="https://github.com/catchingknives/RP-Hypertrophy-Hub-Visualizer"
         target="_blank"
         rel="noopener noreferrer"
       >
