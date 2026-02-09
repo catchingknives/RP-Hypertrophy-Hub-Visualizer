@@ -1,23 +1,30 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { DomSanitizer } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 
 /**
+ * Defines an exercise with a name and video URL.
+ */
+export interface Exercise {
+  name: string;
+  url: string;
+}
+
+/**
  * Defines the interface for the volume landmark objects.
  */
 export interface VolumeLandmark {
-  "Muscle": string,
-  'MV': string,
-  'MEV': string,
-  'MAV': string,
-  'MRV': string,
-  "Freq": string,
-  "url": string,
-  "exercises": any[]
-};
+  "Muscle": string;
+  'MV': string;
+  'MEV': string;
+  'MAV': string;
+  'MRV': string;
+  "Freq": string;
+  "url": string;
+  "exercises": Exercise[];
+}
 
 /**
  * List of objects representing the muscle group specific
@@ -26,63 +33,63 @@ export interface VolumeLandmark {
 const VOLUME_LANDMARKS: VolumeLandmark[] = [
   {
     "Muscle": "Back",
-    'MV': "6",
+    'MV': "8",
     'MEV': "10",
-    'MAV': "11-19",
-    'MRV': "20-35",
+    'MAV': "14-22",
+    'MRV': "25",
     "Freq": "2-4 x Week",
-    "url": "https://renaissanceperiodization.com/back-training-tips-hypertrophy/",
+    "url": "https://rpstrength.com/blogs/articles/back-hypertrophy-training-tips",
     "exercises": [
-      "https://youtube.com/embed/6FZHJGzMFEc",
-      "https://youtube.com/embed/jiowkUMomlw",
-      "https://youtube.com/embed/UPGuwx7GQ9s",
-      "https://youtube.com/embed/H260SUUyJBM",
-      "https://youtube.com/embed/3QcJggd_L24",
-      "https://youtube.com/embed/0UBRfiO4zDs",
-      "https://youtube.com/embed/_FrrYQxA6kc",
-      "https://youtube.com/embed/yPis7nlbqdY",
-      "https://youtube.com/embed/tZUYS7X50so",
-      "https://youtube.com/embed/5PoEksoJNaw"
+      { name: "Weighted Pull-Up", url: "https://www.youtube.com/watch?v=6FZHJGzMFEc" },
+      { name: "Barbell Row", url: "https://www.youtube.com/watch?v=jiowkUMomlw" },
+      { name: "Dumbbell Row", url: "https://www.youtube.com/watch?v=UPGuwx7GQ9s" },
+      { name: "Chest Supported Row", url: "https://www.youtube.com/watch?v=H260SUUyJBM" },
+      { name: "Seated Cable Row", url: "https://www.youtube.com/watch?v=3QcJggd_L24" },
+      { name: "Lat Pulldown", url: "https://www.youtube.com/watch?v=0UBRfiO4zDs" },
+      { name: "T-Bar Row", url: "https://www.youtube.com/watch?v=_FrrYQxA6kc" },
+      { name: "Meadows Row", url: "https://www.youtube.com/watch?v=yPis7nlbqdY" },
+      { name: "Rack Pull", url: "https://www.youtube.com/watch?v=tZUYS7X50so" },
+      { name: "Straight Arm Pulldown", url: "https://www.youtube.com/watch?v=5PoEksoJNaw" }
     ]
   },
   {
     "Muscle": "Quads",
     'MV': "6",
     'MEV': "8",
-    'MAV': "9-17",
-    'MRV': "18-30",
+    'MAV': "12-18",
+    'MRV': "20",
     "Freq": "2-3 x Week",
-    "url": "https://renaissanceperiodization.com/expert-advice/quad-size-training-tips",
+    "url": "https://rpstrength.com/blogs/articles/quad-hypertrophy-training-tips",
     "exercises": [
-      "https://youtube.com/embed/-eO_VydErV0",
-      "https://youtube.com/embed/0DQvn2qsOG4",
-      "https://youtube.com/embed/HHxNbhP16UE",
-      "https://youtube.com/embed/rYgNArpwE7E",
-      "https://youtube.com/embed/i7J5h7BJ07g",
-      "https://youtube.com/embed/m0FOpMEgero",
-      "https://youtube.com/embed/yZmx_Ac3880",
-      "https://youtube.com/embed/1IIPcUCKxcE",
-      "https://youtube.com/embed/L__-j2v_LPM"
+      { name: "High Bar Squat", url: "https://www.youtube.com/watch?v=-eO_VydErV0" },
+      { name: "Front Squat", url: "https://www.youtube.com/watch?v=0DQvn2qsOG4" },
+      { name: "Hack Squat", url: "https://www.youtube.com/watch?v=HHxNbhP16UE" },
+      { name: "Leg Press", url: "https://www.youtube.com/watch?v=rYgNArpwE7E" },
+      { name: "Walking Lunge", url: "https://www.youtube.com/watch?v=i7J5h7BJ07g" },
+      { name: "Belt Squat", url: "https://www.youtube.com/watch?v=m0FOpMEgero" },
+      { name: "Leg Extension", url: "https://www.youtube.com/watch?v=yZmx_Ac3880" },
+      { name: "Smith Machine Squat", url: "https://www.youtube.com/watch?v=1IIPcUCKxcE" },
+      { name: "Bulgarian Split Squat", url: "https://www.youtube.com/watch?v=L__-j2v_LPM" }
     ]
   },
   {
     "Muscle": "Hamstrings",
-    'MV': "3",
-    'MEV': "4",
-    'MAV': "5-12",
-    'MRV': "13-18",
+    'MV': "4",
+    'MEV': "6",
+    'MAV': "10-16",
+    'MRV': "20",
     "Freq": "2-3 x Week",
-    "url": "https://renaissanceperiodization.com/expert-advice/hamstring-size-training-tips",
+    "url": "https://rpstrength.com/blogs/articles/hamstring-hypertrophy-training-tips",
     "exercises": [
-      "https://youtube.com/embed/5_ejbGfdAQE",
-      "https://youtube.com/embed/cYKYGwcg0U8",
-      "https://youtube.com/embed/SBGYSfoqyfU",
-      "https://youtube.com/embed/dEJ0FTm-CEk",
-      "https://youtube.com/embed/mnxn-7SO9Ks",
-      "https://youtube.com/embed/n5WDXD_mpVY",
-      "https://youtube.com/embed/Orxowest56U",
-      "https://youtube.com/embed/N6FVnaasdq0",
-      "https://youtube.com/embed/CN_7cz3P-1U"
+      { name: "Romanian Deadlift", url: "https://www.youtube.com/watch?v=5_ejbGfdAQE" },
+      { name: "Lying Leg Curl", url: "https://www.youtube.com/watch?v=cYKYGwcg0U8" },
+      { name: "Seated Leg Curl", url: "https://www.youtube.com/watch?v=SBGYSfoqyfU" },
+      { name: "Stiff Leg Deadlift", url: "https://www.youtube.com/watch?v=dEJ0FTm-CEk" },
+      { name: "Glute Ham Raise", url: "https://www.youtube.com/watch?v=mnxn-7SO9Ks" },
+      { name: "Good Morning", url: "https://www.youtube.com/watch?v=n5WDXD_mpVY" },
+      { name: "Single Leg Curl", url: "https://www.youtube.com/watch?v=Orxowest56U" },
+      { name: "Sumo Deadlift", url: "https://www.youtube.com/watch?v=N6FVnaasdq0" },
+      { name: "Nordic Ham Curl", url: "https://www.youtube.com/watch?v=CN_7cz3P-1U" }
     ]
   },
   {
@@ -90,202 +97,202 @@ const VOLUME_LANDMARKS: VolumeLandmark[] = [
     'MV': "0",
     'MEV': "0",
     'MAV': "4-12",
-    'MRV': "13-30",
-    "Freq": "1-3 x Week",
-    "url": "https://renaissanceperiodization.com/glute-training-tips-hypertrophy/",
+    'MRV': "16",
+    "Freq": "2-3 x Week",
+    "url": "https://rpstrength.com/blogs/articles/glute-hypertrophy-training-tips",
     "exercises": [
-      "https://youtube.com/embed/EF7jXP17DPE",
-      "https://youtube.com/embed/_meXEWq5MOQ",
-      "https://youtube.com/embed/pv8e6OSyETE",
-      "https://youtube.com/embed/AweC3UaM14o",
-      "https://youtube.com/embed/kvWcDHH62j0",
-      "https://youtube.com/embed/X-uKkAukJVA",
-      "https://youtube.com/embed/eFWCn5iEbTU",
-      "https://youtube.com/embed/NLDBFtSNhqg",
-      "https://youtube.com/embed/ZSPmIyX9RZs",
-      "https://youtube.com/embed/TQfhY5oJ_Sc",
+      { name: "Hip Thrust", url: "https://www.youtube.com/watch?v=EF7jXP17DPE" },
+      { name: "Sumo Deadlift", url: "https://www.youtube.com/watch?v=_meXEWq5MOQ" },
+      { name: "Cable Pull Through", url: "https://www.youtube.com/watch?v=pv8e6OSyETE" },
+      { name: "Walking Lunge", url: "https://www.youtube.com/watch?v=AweC3UaM14o" },
+      { name: "Step Up", url: "https://www.youtube.com/watch?v=kvWcDHH62j0" },
+      { name: "Glute Kickback", url: "https://www.youtube.com/watch?v=X-uKkAukJVA" },
+      { name: "Back Extension", url: "https://www.youtube.com/watch?v=eFWCn5iEbTU" },
+      { name: "Barbell Hip Thrust", url: "https://www.youtube.com/watch?v=NLDBFtSNhqg" },
+      { name: "Single Leg Hip Thrust", url: "https://www.youtube.com/watch?v=ZSPmIyX9RZs" },
+      { name: "Glute Bridge", url: "https://www.youtube.com/watch?v=TQfhY5oJ_Sc" }
     ]
   },
   {
     "Muscle": "Chest",
     'MV': "4",
     'MEV': "6",
-    'MAV': "7-19",
-    'MRV': "20-35",
+    'MAV': "12-20",
+    'MRV': "22",
     "Freq": "2-3 x Week",
-    "url": "https://renaissanceperiodization.com/chest-training-tips-hypertrophy/",
+    "url": "https://rpstrength.com/blogs/articles/chest-hypertrophy-training-tips",
     "exercises": [
-      "https://youtube.com/embed/4mfLHnFL0Uw",
-      "https://youtube.com/embed/Cj6P91eFXkM",
-      "https://youtube.com/embed/e_8HLu59-to",
-      "https://youtube.com/embed/_9VlfuYYC7w",
-      "https://youtube.com/embed/gmNlqsE3Onc",
-      "https://youtube.com/embed/YQ2s_Y7g5Qk",
-      "https://youtube.com/embed/JFm8KbhjibM",
-      "https://youtube.com/embed/BhlL-esnitU",
-      "https://youtube.com/embed/aV1U_mK3XOs",
-      "https://youtube.com/embed/0Wa9CfRXUkA",
+      { name: "Flat Barbell Bench Press", url: "https://www.youtube.com/watch?v=4mfLHnFL0Uw" },
+      { name: "Incline Barbell Bench Press", url: "https://www.youtube.com/watch?v=Cj6P91eFXkM" },
+      { name: "Dumbbell Bench Press", url: "https://www.youtube.com/watch?v=e_8HLu59-to" },
+      { name: "Incline Dumbbell Press", url: "https://www.youtube.com/watch?v=_9VlfuYYC7w" },
+      { name: "Cable Fly", url: "https://www.youtube.com/watch?v=gmNlqsE3Onc" },
+      { name: "Pec Deck", url: "https://www.youtube.com/watch?v=YQ2s_Y7g5Qk" },
+      { name: "Dumbbell Fly", url: "https://www.youtube.com/watch?v=JFm8KbhjibM" },
+      { name: "Decline Bench Press", url: "https://www.youtube.com/watch?v=BhlL-esnitU" },
+      { name: "Machine Chest Press", url: "https://www.youtube.com/watch?v=aV1U_mK3XOs" },
+      { name: "Push-Up", url: "https://www.youtube.com/watch?v=0Wa9CfRXUkA" }
     ]
   },
   {
     "Muscle": "Front-Delts",
     'MV': "0",
     'MEV': "0",
-    'MAV': "0-12",
-    'MRV': "16",
-    "Freq": "2-6 x Week",
-    "url": "https://renaissanceperiodization.com/front-delt-training-tips-hypertrophy/",
+    'MAV': "6-8",
+    'MRV': "12",
+    "Freq": "1-2 x Week",
+    "url": "https://rpstrength.com/blogs/articles/front-delt-hypertrophy-training-tips",
     "exercises": [
-      "https://youtube.com/embed/_ikCPws1mbE",
-      "https://youtube.com/embed/yIoAcMD3jcE",
-      "https://youtube.com/embed/hRJ6tR5-if0",
-      "https://youtube.com/embed/87pZAbYjXc4",
-      "https://youtube.com/embed/WvLMauqrnK8",
-      "https://youtube.com/embed/IuzRCN6eG6Y",
-      "https://youtube.com/embed/HzIiNhHhhtA",
-      "https://youtube.com/embed/OLqZDUUD2b0",
-      "https://youtube.com/embed/G2qpTG1Eh40",
-      "https://youtube.com/embed/Raemd3qWgJc"
+      { name: "Overhead Barbell Press", url: "https://www.youtube.com/watch?v=_ikCPws1mbE" },
+      { name: "Dumbbell Shoulder Press", url: "https://www.youtube.com/watch?v=yIoAcMD3jcE" },
+      { name: "Arnold Press", url: "https://www.youtube.com/watch?v=hRJ6tR5-if0" },
+      { name: "Machine Shoulder Press", url: "https://www.youtube.com/watch?v=87pZAbYjXc4" },
+      { name: "Front Dumbbell Raise", url: "https://www.youtube.com/watch?v=WvLMauqrnK8" },
+      { name: "Smith Machine Press", url: "https://www.youtube.com/watch?v=IuzRCN6eG6Y" },
+      { name: "Push Press", url: "https://www.youtube.com/watch?v=HzIiNhHhhtA" },
+      { name: "Cable Front Raise", url: "https://www.youtube.com/watch?v=OLqZDUUD2b0" },
+      { name: "Landmine Press", url: "https://www.youtube.com/watch?v=G2qpTG1Eh40" },
+      { name: "Plate Front Raise", url: "https://www.youtube.com/watch?v=Raemd3qWgJc" }
     ]
   },
   {
     "Muscle": "Side-Delts",
-    'MV': "6",
+    'MV': "0",
     'MEV': "8",
-    'MAV': "9-24",
-    'MRV': "25-40",
-    "Freq": "3+ x Week",
-    "url": "https://renaissanceperiodization.com/expert-advice/side-delt-size-training-tips",
+    'MAV': "16-22",
+    'MRV': "26",
+    "Freq": "3-6 x Week",
+    "url": "https://rpstrength.com/blogs/articles/side-delt-hypertrophy-training-tips",
     "exercises": [
-      "https://youtube.com/embed/um3VVzqunPU",
-      "https://youtube.com/embed/2OMbdPF7mz4",
-      "https://youtube.com/embed/qr3ziolhjvQ",
-      "https://youtube.com/embed/Ub6QruNKfbY",
-      "https://youtube.com/embed/OuG1smZTsQQ",
-      "https://youtube.com/embed/lq7eLC30b9w",
-      "https://youtube.com/embed/0o07iGKUarI",
-      "https://youtube.com/embed/QIpa-9dtkgA",
-      "https://youtube.com/embed/D1f7d1OcobY",
-      "https://youtube.com/embed/SKf8wHlIFX0"
+      { name: "Dumbbell Lateral Raise", url: "https://www.youtube.com/watch?v=um3VVzqunPU" },
+      { name: "Cable Lateral Raise", url: "https://www.youtube.com/watch?v=2OMbdPF7mz4" },
+      { name: "Machine Lateral Raise", url: "https://www.youtube.com/watch?v=qr3ziolhjvQ" },
+      { name: "Behind the Back Cable Raise", url: "https://www.youtube.com/watch?v=Ub6QruNKfbY" },
+      { name: "Upright Row", url: "https://www.youtube.com/watch?v=OuG1smZTsQQ" },
+      { name: "Leaning Lateral Raise", url: "https://www.youtube.com/watch?v=lq7eLC30b9w" },
+      { name: "Seated Lateral Raise", url: "https://www.youtube.com/watch?v=0o07iGKUarI" },
+      { name: "One Arm Cable Lateral Raise", url: "https://www.youtube.com/watch?v=QIpa-9dtkgA" },
+      { name: "Band Lateral Raise", url: "https://www.youtube.com/watch?v=D1f7d1OcobY" },
+      { name: "Dumbbell W Raise", url: "https://www.youtube.com/watch?v=SKf8wHlIFX0" }
     ]
   },
   {
     "Muscle": "Rear-Delts",
     'MV': "0",
-    'MEV': "6",
-    'MAV': "7-17",
-    'MRV': "18-35",
-    "Freq": "2-5 x Week",
-    "url": "https://renaissanceperiodization.com/expert-advice/rear-delt-size-training-tips",
+    'MEV': "8",
+    'MAV': "16-22",
+    'MRV': "26",
+    "Freq": "2-6 x Week",
+    "url": "https://rpstrength.com/blogs/articles/rear-delt-hypertrophy-training-tips",
     "exercises": [
-      "https://youtube.com/embed/34gVHrkaiz0",
-      "https://youtube.com/embed/f0g5NkYiWUY",
-      "https://youtube.com/embed/-MODnZdnmAQ",
-      "https://youtube.com/embed/qz1OLup4W_M",
-      "https://youtube.com/embed/nzTY7j9ocR8",
-      "https://youtube.com/embed/90cE3rCLtmo",
-      "https://youtube.com/embed/z3PRz2aVA10",
-      "https://youtube.com/embed/8CGMuud1ANw",
-      "https://youtube.com/embed/5YK4bgzXDp0",
-      "https://youtube.com/embed/hPWYuhJMUhU"
+      { name: "Dumbbell Rear Delt Swing", url: "https://www.youtube.com/watch?v=34gVHrkaiz0" },
+      { name: "Cable Face Pull", url: "https://www.youtube.com/watch?v=f0g5NkYiWUY" },
+      { name: "Machine Reverse Fly", url: "https://www.youtube.com/watch?v=-MODnZdnmAQ" },
+      { name: "Bent Over Dumbbell Rear Delt Raise", url: "https://www.youtube.com/watch?v=qz1OLup4W_M" },
+      { name: "Cable Rear Delt Fly", url: "https://www.youtube.com/watch?v=nzTY7j9ocR8" },
+      { name: "Barbell Rear Delt Row", url: "https://www.youtube.com/watch?v=90cE3rCLtmo" },
+      { name: "Band Pull Apart", url: "https://www.youtube.com/watch?v=z3PRz2aVA10" },
+      { name: "Chest Supported Rear Delt Raise", url: "https://www.youtube.com/watch?v=8CGMuud1ANw" },
+      { name: "Cable Rope Face Pull", url: "https://www.youtube.com/watch?v=5YK4bgzXDp0" },
+      { name: "Incline Bench Reverse Fly", url: "https://www.youtube.com/watch?v=hPWYuhJMUhU" }
     ]
   },
   {
     "Muscle": "Biceps",
-    'MV': "4",
+    'MV': "5",
     'MEV': "8",
-    'MAV': "9-19",
-    'MRV': "20-35",
-    "Freq": "2-3 x Week",
-    "url": "https://renaissanceperiodization.com/bicep-training-tips-hypertrophy/",
+    'MAV': "14-20",
+    'MRV': "26",
+    "Freq": "2-6 x Week",
+    "url": "https://rpstrength.com/blogs/articles/bicep-hypertrophy-training-tips",
     "exercises": [
-      "https://youtube.com/embed/iixND1P2lik",
-      "https://youtube.com/embed/pUS6HBQjRmc",
-      "https://youtube.com/embed/JnLFSFurrqQ",
-      "https://youtube.com/embed/yuozln3CC94",
-      "https://youtube.com/embed/opFVuRi_3b8",
-      "https://youtube.com/embed/fuK3nFvwgXk",
-      "https://youtube.com/embed/ke2shAeQ0O8",
-      "https://youtube.com/embed/tRXw8HQ7-oA",
-      "https://youtube.com/embed/cdmnvo3augg",
-      "https://youtube.com/embed/EK747VC37yE",
+      { name: "Barbell Curl", url: "https://www.youtube.com/watch?v=iixND1P2lik" },
+      { name: "EZ Bar Curl", url: "https://www.youtube.com/watch?v=pUS6HBQjRmc" },
+      { name: "Dumbbell Curl", url: "https://www.youtube.com/watch?v=JnLFSFurrqQ" },
+      { name: "Incline Dumbbell Curl", url: "https://www.youtube.com/watch?v=yuozln3CC94" },
+      { name: "Cable Curl", url: "https://www.youtube.com/watch?v=opFVuRi_3b8" },
+      { name: "Dumbbell Twist Curl", url: "https://www.youtube.com/watch?v=fuK3nFvwgXk" },
+      { name: "Hammer Curl", url: "https://www.youtube.com/watch?v=ke2shAeQ0O8" },
+      { name: "Spider Curl", url: "https://www.youtube.com/watch?v=tRXw8HQ7-oA" },
+      { name: "Preacher Curl", url: "https://www.youtube.com/watch?v=cdmnvo3augg" },
+      { name: "Concentration Curl", url: "https://www.youtube.com/watch?v=EK747VC37yE" }
     ]
   },
   {
     "Muscle": "Triceps",
     'MV': "4",
     'MEV': "6",
-    'MAV': "7-19",
-    'MRV': "20+",
-    "Freq": "2-6 x Week",
-    "url": "https://renaissanceperiodization.com/triceps-hypertrophy-training-tips/",
+    'MAV': "10-14",
+    'MRV': "18",
+    "Freq": "2-4 x Week",
+    "url": "https://rpstrength.com/blogs/articles/triceps-hypertrophy-training-tips",
     "exercises": [
-      "https://youtube.com/embed/q5X9thiKofE",
-      "https://youtube.com/embed/yZ83t4mrPrI",
-      "https://youtube.com/embed/l3rHYPtMUo8",
-      "https://youtube.com/embed/1u18yJELsh0",
-      "https://youtube.com/embed/Cp_bShvMY4c",
-      "https://youtube.com/embed/6Fzep104f0s",
-      "https://youtube.com/embed/4LA1kF7yCGo",
-      "https://youtube.com/embed/jPjhQ2hsAds",
-      "https://youtube.com/embed/IdZ7HXnatko",
-      "https://youtube.com/embed/1lrjpLuXH4w",
+      { name: "Skull Crusher", url: "https://www.youtube.com/watch?v=q5X9thiKofE" },
+      { name: "Close Grip Bench Press", url: "https://www.youtube.com/watch?v=yZ83t4mrPrI" },
+      { name: "Cable Pushdown", url: "https://www.youtube.com/watch?v=l3rHYPtMUo8" },
+      { name: "Overhead Cable Extension", url: "https://www.youtube.com/watch?v=1u18yJELsh0" },
+      { name: "Dumbbell Overhead Extension", url: "https://www.youtube.com/watch?v=Cp_bShvMY4c" },
+      { name: "Dip", url: "https://www.youtube.com/watch?v=6Fzep104f0s" },
+      { name: "Cable Rope Pushdown", url: "https://www.youtube.com/watch?v=4LA1kF7yCGo" },
+      { name: "EZ Bar Skull Crusher", url: "https://www.youtube.com/watch?v=jPjhQ2hsAds" },
+      { name: "Machine Tricep Extension", url: "https://www.youtube.com/watch?v=IdZ7HXnatko" },
+      { name: "Kickback", url: "https://www.youtube.com/watch?v=1lrjpLuXH4w" }
     ]
   },
   {
     "Muscle": "Calves",
-    'MV': "0",
-    'MEV': "2-8",
-    'MAV': "9-19",
-    'MRV': "20+",
-    "Freq": "2-6 x Week",
-    "url": "https://renaissanceperiodization.com/calves-training-tips-hypertrophy/",
+    'MV': "6",
+    'MEV': "8",
+    'MAV': "12-16",
+    'MRV': "20",
+    "Freq": "2-4 x Week",
+    "url": "https://rpstrength.com/blogs/articles/calves-hypertrophy-training-tips",
     "exercises": [
-      "https://youtube.com/embed/N3awlEyTY98",
-      "https://youtube.com/embed/__qfDhdByMY",
-      "https://youtube.com/embed/_gEx2ijsmNM",
-      "https://youtube.com/embed/hh5516HCu4k",
-      "https://youtube.com/embed/KxEYX_cuesM"
+      { name: "Standing Calf Raise", url: "https://www.youtube.com/watch?v=N3awlEyTY98" },
+      { name: "Seated Calf Raise", url: "https://www.youtube.com/watch?v=__qfDhdByMY" },
+      { name: "Leg Press Calf Raise", url: "https://www.youtube.com/watch?v=_gEx2ijsmNM" },
+      { name: "Donkey Calf Raise", url: "https://www.youtube.com/watch?v=hh5516HCu4k" },
+      { name: "Single Leg Calf Raise", url: "https://www.youtube.com/watch?v=KxEYX_cuesM" }
     ]
   },
   {
     "Muscle": "Abs",
     'MV': "0",
-    'MEV': "0-6",
-    'MAV': "7-24",
-    'MRV': "25+",
-    "Freq": "2-6 x Week",
-    "url": "https://renaissanceperiodization.com/ab-training/",
+    'MEV': "0",
+    'MAV': "16-20",
+    'MRV': "25",
+    "Freq": "3-5 x Week",
+    "url": "https://rpstrength.com/blogs/articles/ab-hypertrophy-training-tips",
     "exercises": [
-      "https://youtube.com/embed/RD_A-Z15ER4",
-      "https://youtube.com/embed/7FwGZ8qY5OU",
-      "https://youtube.com/embed/-OUSBPnHvsQ",
-      "https://youtube.com/embed/T_X5rb3G5lk",
-      "https://youtube.com/embed/pXg8qppif7I",
-      "https://youtube.com/embed/6GMKPQVERzw",
-      "https://youtube.com/embed/DAnTf16NcT0",
-      "https://youtube.com/embed/BIOM5eSsJ_8"
+      { name: "Cable Crunch", url: "https://www.youtube.com/watch?v=RD_A-Z15ER4" },
+      { name: "Weighted Crunch", url: "https://www.youtube.com/watch?v=7FwGZ8qY5OU" },
+      { name: "Hanging Leg Raise", url: "https://www.youtube.com/watch?v=-OUSBPnHvsQ" },
+      { name: "Ab Wheel Rollout", url: "https://www.youtube.com/watch?v=T_X5rb3G5lk" },
+      { name: "Decline Sit-Up", url: "https://www.youtube.com/watch?v=pXg8qppif7I" },
+      { name: "Machine Crunch", url: "https://www.youtube.com/watch?v=6GMKPQVERzw" },
+      { name: "Weighted Plank", url: "https://www.youtube.com/watch?v=DAnTf16NcT0" },
+      { name: "Dragon Flag", url: "https://www.youtube.com/watch?v=BIOM5eSsJ_8" }
     ]
   },
   {
     "Muscle": "Traps",
     'MV': "0",
-    'MEV': "4",
-    'MAV': "7-24",
-    'MRV': "25+",
+    'MEV': "0",
+    'MAV': "12-20",
+    'MRV': "26",
     "Freq": "2-6 x Week",
-    "url": "https://renaissanceperiodization.com/trap-training-tips-hypertrophy/",
+    "url": "https://rpstrength.com/blogs/articles/trap-hypertrophy-training-tips",
     "exercises": [
-      "https://youtube.com/embed/M_MjF5Nm_h4",
-      "https://youtube.com/embed/d9daNDIXtK8",
-      "https://youtube.com/embed/_t3lrPI6Ns4",
-      "https://youtube.com/embed/5z7ZtboxbBY",
-      "https://youtube.com/embed/GH_l85Ky3vA",
-      "https://youtube.com/embed/BeIcUXQ3RDc",
-      "https://youtube.com/embed/2zaT3WAgZi0",
-      "https://youtube.com/embed/zgToz5FiI-E",
-      "https://youtube.com/embed/YykmcX2b-LY",
-      "https://youtube.com/embed/nOn_Bz0zrwQ"
+      { name: "Barbell Shrug", url: "https://www.youtube.com/watch?v=M_MjF5Nm_h4" },
+      { name: "Dumbbell Shrug", url: "https://www.youtube.com/watch?v=d9daNDIXtK8" },
+      { name: "Cable Shrug", url: "https://www.youtube.com/watch?v=_t3lrPI6Ns4" },
+      { name: "Smith Machine Shrug", url: "https://www.youtube.com/watch?v=5z7ZtboxbBY" },
+      { name: "Behind the Back Barbell Shrug", url: "https://www.youtube.com/watch?v=GH_l85Ky3vA" },
+      { name: "Overhead Barbell Shrug", url: "https://www.youtube.com/watch?v=BeIcUCKxcE" },
+      { name: "Dumbbell Lean Shrug", url: "https://www.youtube.com/watch?v=2zaT3WAgZi0" },
+      { name: "Kelso Shrug", url: "https://www.youtube.com/watch?v=zgToz5FiI-E" },
+      { name: "Wide Grip Upright Row", url: "https://www.youtube.com/watch?v=YykmcX2b-LY" },
+      { name: "Face Pull to External Rotation", url: "https://www.youtube.com/watch?v=nOn_Bz0zrwQ" }
     ]
   },
   {
@@ -295,20 +302,20 @@ const VOLUME_LANDMARKS: VolumeLandmark[] = [
     'MAV': "9-19",
     'MRV': "20+",
     "Freq": "2-6 x Week",
-    "url": "https://renaissanceperiodization.com/expert-advice/forearm-growth-training-tips",
+    "url": "https://rpstrength.com/blogs/articles/forearm-hypertrophy-training-tips",
     "exercises": [
-      "https://youtube.com/embed/lfQR7oVS8eo",
-      "https://youtube.com/embed/iQ4JjOK73PE",
-      "https://youtube.com/embed/2wPpcJBe03o",
-      "https://youtube.com/embed/WVAaKJvToe0"
+      { name: "Barbell Wrist Curl", url: "https://www.youtube.com/watch?v=lfQR7oVS8eo" },
+      { name: "Reverse Barbell Curl", url: "https://www.youtube.com/watch?v=iQ4JjOK73PE" },
+      { name: "Dumbbell Wrist Curl", url: "https://www.youtube.com/watch?v=2wPpcJBe03o" },
+      { name: "Barbell Hold / Grip Work", url: "https://www.youtube.com/watch?v=WVAaKJvToe0" }
     ]
   }
 ];
 
 /**
- * Main display for the web application. Contains a grid with a list 
+ * Main display for the web application. Contains a grid with a list
  * of all the muscle group landmark objects. When an object is clicked
- * on, it opens a display with in-depth recomendations for the landmarks.
+ * on, it opens a display with in-depth recommendations for the landmarks.
  */
 @Component({
   selector: 'app-dashboard',
@@ -323,12 +330,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ["Muscle", 'MV', 'MEV', 'MAV', 'MRV', "Freq"];
 
   /**
-   * Rows displayed by hypetrophy training landmarks.
+   * Rows displayed by hypertrophy training landmarks.
    */
   dataSource: VolumeLandmark[] = VOLUME_LANDMARKS;
 
   /**
-  * Used as a constant mean no muscle group selected.
+  * Used as a constant meaning no muscle group selected.
   */
   NO_MUSCLE_GROUP: null = null;
 
@@ -371,10 +378,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   chartLabels: string[] = [];
 
   /**
-   * @ignore 
+   * @ignore
    */
   constructor(
-    public sanitizer: DomSanitizer,
     public dialog: MatDialog,
     public router: Router) { }
 
@@ -406,14 +412,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Appends the name of a muscle group to the current URL to 
-   * trigger a route change event. If the muscle group provided
-   * is a valid muscle group then the route change subscription
-   * will take the user to the correct display for that group.
-   * If no muscle group is provided, then the user is navigated 
-   * back to the dashboard.
-   * 
-   * @param muscleGroup Muscle group to navigate to the in depth display for.
+   * Appends the name of a muscle group to the current URL to
+   * trigger a route change event.
    */
   navigateTo(muscleGroup: VolumeLandmark) {
     const origin: string = (window.location.origin);
@@ -432,11 +432,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles clicking on a row in the hypertrophy table.
    * Sets the activated muscle group to the one that was
    * just clicked on in the table.
-   * 
-   * @param muscleGroup Muscle group to navigate to the in depth display for.
    */
   setSelectedMuscleGroup(muscleGroup: VolumeLandmark): void {
     this.setChartFromMuscleGroup(muscleGroup);
@@ -445,16 +442,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Returns true if there is no muscle group selected. False otherwise.
+   * Returns true if there is no muscle group selected.
    */
   noMuscleGroupSelected(): boolean {
     return (this.selectedMuscleGroup == this.NO_MUSCLE_GROUP);
   }
 
   /**
-   * Returns the user to the original dashboard they saw when the
-   * web app is loaded with the default route and no path indicating
-   * a selected muscle group.
+   * Returns the user to the original dashboard.
    */
   goBackToDashBoard(): void {
     this.dataSource = VOLUME_LANDMARKS;
@@ -464,17 +459,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   /**
    * Listens to the activated route for any changes.
-   * If the route is changed, then the volume landmarks are 
-   * checked to see if a path is added that corresponds
-   * to one of the muscle groups. If one exists, then that 
-   * muscle group is selected. If one does not exist, then the 
-   * user is sent back to the dashboard.
-   * 
-   * Returns the subscription object so it can be unsubscribed
-   * from in the ngOnDestroy() block.
-   * 
-   * If any error occurs while loading a display for a route, then
-   * the error is caught and the user is returned to the dashboard.
    */
   routeChangeSubscription(): Subscription {
     return this.router.events.subscribe((routerEvent: any) => {
@@ -500,7 +484,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Converts the volume recommendations for a muscle group into 
+   * Converts the volume recommendations for a muscle group into
    * data that can be displayed on the volume bar chart.
    */
   setChartFromMuscleGroup(muscleGroup: VolumeLandmark): void {
@@ -512,7 +496,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       label: dataTitle,
       data: volumeData,
       backgroundColor: "#ee2d37",
-      hoverBackgroundColor: "#b1232a",
+      hoverBackgroundColor: "#c41e27",
     }
     defaultChartLabels.forEach((label: string) => {
       actualChartLabels.push(label);
@@ -538,7 +522,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       fill: false,
       label: "Volume Curve",
       order: 1,
-      data: volumeData
+      data: volumeData,
+      borderColor: "#6c757d",
+      pointBackgroundColor: "#6c757d",
     }
     this.chartData = [muscleGroupChartData, volumeDataAsLine];
     this.chartLabels = actualChartLabels;

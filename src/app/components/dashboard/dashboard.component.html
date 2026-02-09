@@ -13,7 +13,7 @@
         <mat-divider></mat-divider>
         <div class="tableDescription" *ngIf="noMuscleGroupSelected()">
             If you're not familiar with the volume landmarks, read this
-            <a href="https://renaissanceperiodization.com/training-volume-landmarks-muscle-growth/" target="_blank"
+            <a href="https://rpstrength.com/blogs/articles/training-volume-landmarks-muscle-growth" target="_blank"
                 class="rpThemeText">article</a>,
             otherwise this tool wont make sense. Click on a row in the table to view the in-depth recommendations for
             that muscle group. The units for the cells in the following table is <span class="italic">sets per
@@ -21,7 +21,8 @@
         </div>
         <div class="tableDescription" *ngIf="!noMuscleGroupSelected()">
             Here is a link to the official RP documentation for this muscle group: <a
-                href="{{this.selectedMuscleGroup.url}}" target="_blank">{{this.selectedMuscleGroup.Muscle}} Training
+                href="{{this.selectedMuscleGroup.url}}" target="_blank"
+                class="rpThemeText">{{this.selectedMuscleGroup.Muscle}} Training
                 Guide</a>
         </div>
     </mat-card>
@@ -63,18 +64,18 @@
             </canvas>
         </mat-card>
         <mat-card class="exercises">
+            <div class="exerciseListTitle">Exercises</div>
             <div class="exerciseListContainer">
-                <div *ngFor="let exercise of this.selectedMuscleGroup.exercises" class="exercise">
-                    <div class="exerciseFrameContainer">
-                        <iframe id="player" type="text/html" [src]="exercise | safe: 'resourceUrl'" frameborder="0"
-                            class="exerciseFrame" allowfullscreen></iframe>
-                    </div>
-                </div>
+                <a *ngFor="let exercise of this.selectedMuscleGroup.exercises"
+                    [href]="exercise.url" target="_blank" class="exerciseLink">
+                    <mat-icon>play_circle_outline</mat-icon>
+                    {{exercise.name}}
+                </a>
             </div>
         </mat-card>
     </div>
     <div class="disclaimer">
-        I am not affiliated with <a href="https://renaissanceperiodization.com/" target="_blank"
+        I am not affiliated with <a href="https://rpstrength.com/" target="_blank"
             class="rpThemeText">Renaissance
             Periodization</a> (RP) and take no credit for their work.
         This tool is open source and if you're interested, here is the
