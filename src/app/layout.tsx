@@ -12,7 +12,12 @@ export const metadata: Metadata = {
   title: "RP Hypertrophy Hub",
   description:
     "Visualize Renaissance Periodization hypertrophy training volume recommendations by muscle group.",
-  icons: { icon: "/RP-Hypertrophy-Hub-Visualizer/favicon.ico" },
+  icons: {
+    icon: [
+      { url: "/RP-Hypertrophy-Hub-Visualizer/favicon.svg", type: "image/svg+xml" },
+      { url: "/RP-Hypertrophy-Hub-Visualizer/favicon.ico", sizes: "32x32" },
+    ],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
